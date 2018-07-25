@@ -1,8 +1,15 @@
+var package = require('../package.json');
 let config = {};
 
 config.application = {};
-config.application.host = 'localhost';
+config.application.domain = 'localhost';
+config.application.name = package.name;
+config.application.port = 3000;
 config.application.maxItemsPerPage = 100;
+config.application.timeZone = 'America/Bogota';
+config.application.locale = 'es';
+config.application.host = `http://${config.application.domain}:${config.application.port}`;
+config.application.version = package.version;
 
 config.database = {};
 config.database.dialect = "mysql";
@@ -36,5 +43,25 @@ config.uploads.filenameLength = 32;
 config.mail = {};
 config.mail.user = '';
 config.mail.password = '';
+
+config.validate = {};
+config.validate.thumbnailUrl = /^\/private(\/(\d+)x(\d+))?\/(.*)+\/?$/;
+/**
+ * Session config
+ * */
+config.session = {};
+config.session.secret = config.crypto.salt;
+config.session.maxAge = 60 * 5;
+config.session.resave = false;
+config.session.saveUninitialized = false;
+//Note be careful when setting this to true, as compliant clients will not send
+//the cookie back to the server in the future if the browser does not have
+//an HTTPS connection.
+//
+//      https://github.com/expressjs/session
+config.session.cookie = { secure: true };
+config.session.name = `${config.application.name}' - REST-API SID`;
+config.session.tokenLenght = 64;
+config.session.expire = 60 * 60 * 1000 * 2;
 
 module.exports = config;

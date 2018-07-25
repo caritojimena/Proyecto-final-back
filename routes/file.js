@@ -2,10 +2,7 @@
 
 let express = require('express'),
     router = express.Router(),
-    config = require('../config/config'),
-    models = require('../models'),
     path = require('path'),
-    fs = require('fs'),
     thumbnail = require('../modules/thumbnail'),
     fileUtils = require('../modules/fileUtils');
 
@@ -19,7 +16,6 @@ let express = require('express'),
  *  extension se conservara.
  * */
 router.post('/upload', (req, res, next) => {
-    //TODO(LookApp): falta agregar el control de autenticacion, pero se deben cambiar las pruebas tambien
     console.log('router.file.upload');
     upload = fileUtils.upload({ path: path.join(__dirname, '../' + config.uploads.defaultPrivateUpload), filenameLength: config.uploads.filenameLength });
     upload(req, res, err => {

@@ -1,7 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var object = require('../modules/objectsAndTypes');
-var crypto = require('crypto');
+var express = require('express'),
+  router = express.Router(),
+  object = require('../modules/objectsAndTypes');
 
 /* GET users listing. */
 router.get('/:id', passport.authenticate('bearer', { session: false }), (req, res, next) => {
@@ -55,33 +54,6 @@ router.delete('/delete/:id', (req, res, next) => {
     .catch(response => {
       res.json({ status: false, content: response });
     });
-});
-
-router.post('/login', (req, res, next) => {
-  var passwordHash = crypto.createHmac('sha256', config.crypto.salt)
-    .update(req.body.password)
-    .digest('hex');
-
-  models.User.findOne({
-    where: {
-      email: req.body.email,
-      password: passwordHash
-    }
-  }).then(user => {
-    if (user) {
-      if (!user.token) {
-        user.token = crypto.createHmac('sha256', config.crypto.salt)
-          .update((Math.random() * 1000 + ""))
-          .digest('hex');
-
-        user.save();
-      }
-
-      res.json({ status: true, content: user });
-    } else {
-      res.json({ status: false, content: "usuario no existe" });
-    }
-  });
 });
 
 module.exports = router;

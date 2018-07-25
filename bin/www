@@ -3,19 +3,22 @@
 /**
  * Module dependencies.
  */
+console.log('Social App - Server is starting, please wait a moment please... ');
+config = require('../config/config');
+models = require('../models');
+moment = require('moment-timezone');
 
 var app = require('../app');
 var debug = require('debug')('back01:server');
 var http = require('http');
 
-config = require('../config/config');
-models = require('../models');
 
+moment.tz.setDefault(config.application.timeZone);
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || config.application.port);
 app.set('port', port);
 
 /**
@@ -27,13 +30,13 @@ var server = http.createServer(app);
  * Synchronize database
  */
 models.sequelize.sync(config.sequelize.sync).then(() => {
-  console.log("Rappi - database synchronized");
+  console.log("Social App - database synchronized");
   /**
    * Listen on provided port, on all network interfaces.
    */
   server.listen(port, () => {
-    console.log('Rappi - Server listening on port ' + server.address().port + ' and ready');
-    debug('Rappi - Server listening on port ' + server.address().port);
+    console.log('Social App - Server listening on port ' + server.address().port + ' and ready');
+    debug('Social App - Server listening on port ' + server.address().port);
   });
 
   server.on('error', onError);

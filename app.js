@@ -1,20 +1,27 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let createError = require('http-errors'),
+  express = require('express'),
+  path = require('path'),
+  cookieParser = require('cookie-parser'),
+  logger = require('morgan'),
+  compression = require('compression'),
+  sessionVerifier = require('./modules/session-verifier');
 
-//var sessionVerifier = require('./modules/session-verifier');
 require('./modules/authentication-verifier');
 
-var allRouter = require('./routes/all');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var productRouter = require('./routes/product');
-var categoryRouter = require('./routes/category');
+var allRouter = require('./routes/all'),
+  indexRouter = require('./routes/index'),
+  fileRouter = require('./routes/file'),
+  usersRouter = require('./routes/users'),
+  friendsRouter = require('./routes/friends'),
+  postRouter = require('./routes/post/post'),
+  likeRouter = require('./routes/post/like'),
+  commentRouter = require('./routes/post/comment');
 
 var app = express();
 
+config.application.systemPath = __dirname;
+
+app.use(compression({ threshold: 0, windowBits: 14, memLevel: 9, filter: (req, res) => (true) }));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -23,9 +30,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(allRouter);
 app.use('/', indexRouter);
+
+//for user feature
 app.use('/user', usersRouter);
-app.use('/product', productRouter);
-app.use('/category', categoryRouter);
+app.use('/user', friendsRouter);
+
+app.use('/file', fileRouter);
+
+//for post feature
+app.use('/post', postRouter);
+app.use('/post', likeRouter);
+app.use('/post', commentRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
