@@ -30,7 +30,11 @@ module.exports = (sequelize, DataTypes) => {
         userName: {
             type: DataTypes.STRING,
             allowNull: false
-        },        
+        },
+        photo: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         firstName: {
             type: DataTypes.STRING,
             allowNull: false
@@ -60,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
             // transform all passed model names (first parameter of define) into plural.
             // if you don't want that, set the following
             freezeTableName: true,
-            
+
             // define the table's name
             tableName: 'user',
 
@@ -69,5 +73,28 @@ module.exports = (sequelize, DataTypes) => {
             // Set to true or a string with the attribute name you want to use to enable.
             version: false
         });
+
+    //Relacion con tabla Friends
+    User.associate = models => {
+        User.hasMany(models.User, {
+            as: 'Friends',
+            foreignKey: 'user1',
+            through: 'friends'
+        });
+        User.belongsToMany(models.User, {
+            as: 'Friend',
+            foreignKey: 'user2',
+            through: 'friends'
+        });
+        //Relacion con tabla Post      
+        User.hasMany(models.Post, {
+            as: 'Post',
+            foreignKey: 'user'
+        });
+        User.hasMany(models.Comment, {
+            as: 'Comment',
+            foreignKey: 'user'
+        });
+    };
     return User;
 };
