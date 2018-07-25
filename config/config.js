@@ -7,10 +7,10 @@ config.application.maxItemsPerPage = 100;
 config.database = {};
 config.database.dialect = "mysql";
 config.database.username = "root";
-config.database.password = "";
+config.database.password = "CwqSolu9pZMorHuz";
 config.database.port = "3306";
-config.database.host = "127.0.0.1";
-config.database.database = "rappi";
+config.database.host = "phenixbytes.com";
+config.database.database = "socialapp";
 config.database.operatorsAliases = false;
 
 config.database.pool = {};
