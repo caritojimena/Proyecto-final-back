@@ -45,21 +45,25 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eedab15a55c970537b4fe8f99aae592ad83de9383c9b67f92d18b9c97c3b88a0"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\":\"example11@example.com\",\n    \"password\":\"654312\"\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:3000/user/login",
+							"raw": "localhost:3000/user/logout",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"user",
-								"login"
+								"logout"
 							]
 						}
 					},
@@ -78,7 +82,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer d1d61eb406c2d02911020a8fb1171ea60dc0ae72d3f4f88b75c43846b0c9fb22"
+								"value": "Bearer eedab15a55c970537b4fe8f99aae592ad83de9383c9b67f92d18b9c97c3b88a0"
 							}
 						],
 						"body": {},
@@ -289,6 +293,113 @@
 								"product",
 								"delete",
 								"11"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "File",
+			"description": "",
+			"item": [
+				{
+					"name": "File - upload",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/file/upload",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"file",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "File - GET",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/file/get/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"file",
+								"get",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "File - Thumbnail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/file/private/100x100/tmp/YxDgflwUHymMwwe2GvKPlNJsgzIn9kPa",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"file",
+								"private",
+								"100x100",
+								"tmp",
+								"YxDgflwUHymMwwe2GvKPlNJsgzIn9kPa"
 							]
 						}
 					},

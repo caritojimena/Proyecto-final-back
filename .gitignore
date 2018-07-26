@@ -1,1 +1,6 @@
+#modulos de NodeJS
 node_modules/
+
+#archivos subidos o genarados
+public/files/private/tmp
+public/files/private/thumbnail

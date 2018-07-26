@@ -19,7 +19,7 @@ router.post('/save', (req, res, next) => {
     'email',
     'password',
     'firstName',
-    'lastName',  
+    'lastName',
     'photo'
   ], req.body, 'User')
     .then(response => {
@@ -30,13 +30,13 @@ router.post('/save', (req, res, next) => {
     });
 });
 
-router.put('/save/:id', (req, res, next) => {
+router.put('/save/:id', passport.authenticate('bearer', { session: false }), (req, res, next) => {
   req.body.id = req.params.id;
   object.update([
     'email',
     'password',
     'firstName',
-    'lastName',  
+    'lastName',
     'photo'
   ], req.body, 'User')
     .then(response => {
@@ -47,7 +47,7 @@ router.put('/save/:id', (req, res, next) => {
     });
 });
 
-router.delete('/delete/:id', (req, res, next) => {
+router.delete('/delete/:id', passport.authenticate('bearer', { session: false }), (req, res, next) => {
   object.delete('User', req.params.id)
     .then(response => {
       res.json({ status: true, content: response });
@@ -82,6 +82,15 @@ router.post('/login', (req, res, next) => {
       res.json({ status: false, content: "usuario no existe" });
     }
   });
+});
+
+router.post('/logout', passport.authenticate('bearer', { session: false }), (req, res, next) => {
+  if (req.session.user) {
+    req.session.user.token = null;
+    req.session.user.save()
+  }
+  
+  res.json({ status: true, content: 'vuelva pronto' });
 });
 
 module.exports = router;

@@ -17,18 +17,22 @@ let express = require('express'),
  * */
 router.post('/upload', (req, res, next) => {
     console.log('router.file.upload');
-    upload = fileUtils.upload({ path: path.join(__dirname, '../' + config.uploads.defaultPrivateUpload), filenameLength: config.uploads.filenameLength });
+    upload = fileUtils.upload({
+        path: path.join(__dirname, '../' + config.uploads.defaultPrivateUpload),
+        filenameLength: config.uploads.filenameLength
+    });
+
     upload(req, res, err => {
         let response = new Array();
 
         if (!err && (!req.files || req.files.length < 1))
-            err = locale.file.uploadEmpty;
+            err = 'no hay nada que cargar';
 
         if (err) {
-            response.push({ command: 'message', type: "error", content: locale.file.uploadError });
+            response.push({ command: 'message', type: "error", content: 'error al subir el archivo' });
             res.json({ status: false, response: response });
         } else {
-            let files = new Array();
+            let files = [];
             req.files.forEach(file => {
                 let fileValues = {};
                 fileValues.filename = file.filename;
@@ -44,23 +48,23 @@ router.post('/upload', (req, res, next) => {
             models.File
                 .bulkCreate(files)
                 .then((files) => {
-
                     let names = [];
                     for (var i in files)
                         names.push(files[i].filename);
 
                     models.File
-                        .findAll({ where: { filename: { $in: names } } })
+                        .findAll({ where: { filename: { [models.Sequelize.Op.or]: names } } })
                         .then(files => {
                             if (files) {
-                                response.push({ command: 'message', type: "info", content: locale.file.uploadSuccessful });
+                                response.push({ command: 'message', type: "info", content: 'archivo subido' });
                                 if (files.length > 1)
                                     response.push({ command: 'array', type: "file", content: files });
                                 else
                                     response.push({ command: 'model', type: "file", content: files.pop() });
+
                                 res.json({ status: true, response: response });
                             } else {
-                                response.push({ command: 'message', type: "info", content: locale.file.uploadUnexpectedError });
+                                response.push({ command: 'message', type: "info", content: 'ocurrio un error inesperado al subir el archivo' });
                                 res.json({ status: false, response: response });
                             }
                         });
@@ -76,17 +80,15 @@ router.get('/get/:id', (req, res, next) => {
         .findOne({ where: { id: req.params.id } })
         .then(file => {
             if (file) {
-                response.push({ command: 'message', type: "info", content: locale.file.uploadSuccessful });
                 response.push({ command: 'model', type: "file", content: file });
                 res.json({ status: true, response: response });
             } else {
-                response.push({ command: 'message', type: "error", content: locale.file.uploadUnexpectedError });
+                response.push({ command: 'message', type: "error", content: 'ocurrio un error inesperado al subir el archivo' });
                 res.json({ status: false, response: response });
             }
         });
 });
 
-//router.get('/private/*', (req, res, next) => {
 router.get(config.validate.thumbnailUrl, (req, res, next) => {
     console.log('router.file.private');
     let filename = false;
@@ -105,7 +107,7 @@ router.get(config.validate.thumbnailUrl, (req, res, next) => {
     filename = result[1] ? result[1] : false;
     if (filename)
         models.File
-            .findOne({ where: { filename: filename } })
+            .findOne({ where: { filename } })
             .then(file => {
                 if (file) {
                     options.headers['Content-Type'] = file.mime;
@@ -119,9 +121,9 @@ router.get(config.validate.thumbnailUrl, (req, res, next) => {
 
                             res.sendFile(imagePath, options, function (err) {
                                 if (err) {
-                                    res.locals.message = sprintf(locale.file.notExistFile, { filename: req.url });
+                                    res.locals.message = `el archivo ${req.url} no existe`;
                                     res.locals.error = {};
-                                    res.locals.error.status = sprintf(locale.file.notExistFile, { filename: req.url });
+                                    res.locals.error.status = `el archivo ${req.url} no existe`;
                                     res.locals.error.stack = "";
                                     res.status(400);
                                     res.render('error');
@@ -129,26 +131,26 @@ router.get(config.validate.thumbnailUrl, (req, res, next) => {
                             });
                         })
                         .catch(m => {
-                            res.locals.message = sprintf(locale.file.notExistFile, { filename: req.url });
+                            res.locals.message = `el archivo ${req.url} no existe`;
                             res.locals.error = {};
-                            res.locals.error.status = sprintf(locale.file.notExistFile, { filename: req.url });
+                            res.locals.error.status = `el archivo ${req.url} no existe`;
                             res.locals.error.stack = "";
                             res.status(400);
                             res.render('error');
                         });
                 } else {
-                    res.locals.message = sprintf(locale.file.notExistFile, { filename: req.url });
+                    res.locals.message = `el archivo ${req.url} no existe`;
                     res.locals.error = {};
-                    res.locals.error.status = sprintf(locale.file.notExistFile, { filename: req.url });
+                    res.locals.error.status = `el archivo ${req.url} no existe`;
                     res.locals.error.stack = "";
                     res.status(400);
                     res.render('error');
                 }
             });
     else {
-        res.locals.message = sprintf(locale.file.notExistFile, { filename: req.url });
+        res.locals.message = `el archivo ${req.url} no existe`;
         res.locals.error = {};
-        res.locals.error.status = sprintf(locale.file.notExistFile, { filename: req.url });
+        res.locals.error.status = `el archivo ${req.url} no existe`;
         res.locals.error.stack = "";
         res.status(400);
         res.render('error');
