@@ -1,16 +1,6 @@
 
 module.exports = (sequelize, DataTypes) => {
     let Like = sequelize.define('Like', {
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            allowNull: false,
-            primaryKey: true
-        },
-        state: {
-            type: DataTypes.STRING,
-            allowNull: true
-        }
     }, {
             // don't add the timestamp attributes (updatedAt, createdAt)
             timestamps: true,
@@ -31,13 +21,6 @@ module.exports = (sequelize, DataTypes) => {
             // to the model and throw an OptimisticLockingError error when stale instances are saved.
             // Set to true or a string with the attribute name you want to use to enable.
             version: false
-        });
-        //Relacion con Post
-        Like.associate = models => {
-            Like.belongsTo(models.Post, {
-                as: 'Post',
-                foreignKey: 'post'
-            });
-        };           
+        });    
     return Like;
 };

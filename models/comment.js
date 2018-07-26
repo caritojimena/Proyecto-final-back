@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true
         },
         message: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: true
         }
     }, {
@@ -38,7 +38,6 @@ module.exports = (sequelize, DataTypes) => {
                 as: 'User',
                 foreignKey: 'owner'
             });
-        
         };     
     return Comment;
 };

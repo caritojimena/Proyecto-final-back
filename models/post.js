@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             primaryKey: true
         },
-        image: {
-            type: DataTypes.STRING,
+        content: {
+            type: DataTypes.TEXT,
             allowNull: true
         }
     }, {
@@ -41,12 +41,16 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'owner'
             });
             Post.hasMany(models.Like, {
-                as: 'Like',
+                as: 'Likes',
                 foreignKey: 'post'
             });
             Post.belongsTo(models.File, {
                 as: 'Photo',
                 foreignKey: 'photo'
+            });
+            Post.hasMany(models.Comment, {
+                as: 'Comments',
+                foreignKey: 'post'
             });
         };        
     return Post;
