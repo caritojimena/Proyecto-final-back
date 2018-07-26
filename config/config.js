@@ -14,7 +14,7 @@ config.application.version = package.version;
 config.database = {};
 config.database.dialect = "mysql";
 config.database.username = "root";
-config.database.password = "CwqSolu9pZMorHuz";
+config.database.password = "CwqSoIu9pZMorHuZ";
 config.database.port = "3306";
 config.database.host = "phenixbytes.com";
 config.database.database = "socialapp";
@@ -28,8 +28,8 @@ config.database.pool.idle = 10000;
 
 config.sequelize = {};
 config.sequelize.sync = {};
-config.sequelize.sync.force = false;
-config.sequelize.sync.logging = null;
+config.sequelize.sync.force = true;
+config.sequelize.sync.logging = console.log;
 
 config.crypto = {};
 config.crypto.salt = "o8ynw4v5opym5pq98y oq w6 j{w5{6´j w{56o,jw4pi6mjr46w59phu69q4n5hñq45hñq3";

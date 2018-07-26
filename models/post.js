@@ -38,7 +38,15 @@ module.exports = (sequelize, DataTypes) => {
         Post.associate = models => {
             Post.belongsTo(models.User, {
                 as: 'User',
-                foreignKey: 'user'
+                foreignKey: 'owner'
+            });
+            Post.hasMany(models.Like, {
+                as: 'Like',
+                foreignKey: 'post'
+            });
+            Post.belongsTo(models.File, {
+                as: 'Photo',
+                foreignKey: 'photo'
             });
         };        
     return Post;

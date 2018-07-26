@@ -27,14 +27,7 @@ module.exports = (sequelize, DataTypes) => {
                     .digest('hex'));
             }
         },
-        userName: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        photo: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
+
         firstName: {
             type: DataTypes.STRING,
             allowNull: false
@@ -44,10 +37,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         // default values for dates => current time
-        birthday: {
-            type: DataTypes.DATE,
-            allowNull: false
-        },
         token: {
             type: DataTypes.STRING,
             allowNull: true
@@ -76,24 +65,25 @@ module.exports = (sequelize, DataTypes) => {
 
     //Relacion con tabla Friends
     User.associate = models => {
-        User.hasMany(models.User, {
+        User.belongsToMany(models.User, {
             as: 'Friends',
             foreignKey: 'user1',
-            through: 'friends'
+            through: 'friends',
+            otherKey: 'user2'
         });
-        User.belongsToMany(models.User, {
-            as: 'Friend',
-            foreignKey: 'user2',
-            through: 'friends'
-        });
+   
         //Relacion con tabla Post      
         User.hasMany(models.Post, {
             as: 'Post',
-            foreignKey: 'user'
+            foreignKey: 'owner'
         });
         User.hasMany(models.Comment, {
             as: 'Comment',
-            foreignKey: 'user'
+            foreignKey: 'owner'
+        });
+        User.belongsTo(models.File, {
+            as: 'Photo',
+            foreignKey: 'photo'
         });
     };
     return User;

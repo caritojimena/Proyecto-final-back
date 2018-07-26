@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             primaryKey: true
         },
-        estado: {
+        state: {
             type: DataTypes.STRING,
             allowNull: true
         }
@@ -32,5 +32,12 @@ module.exports = (sequelize, DataTypes) => {
             // Set to true or a string with the attribute name you want to use to enable.
             version: false
         });
+        //Relacion con Post
+        Like.associate = models => {
+            Like.belongsTo(models.Post, {
+                as: 'Post',
+                foreignKey: 'post'
+            });
+        };           
     return Like;
 };
