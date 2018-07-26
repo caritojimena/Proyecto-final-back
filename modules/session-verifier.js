@@ -1,7 +1,5 @@
 var models = require('../models'),
-    config = require('../config/config'),
-    userUtils = require('../modules/userUtils'),
-    random = require('randomstring');
+    config = require('../config/config');
 
 var util = {};
 

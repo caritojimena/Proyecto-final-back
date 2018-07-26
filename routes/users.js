@@ -19,8 +19,7 @@ router.post('/save', (req, res, next) => {
     'firstName',
     'lastName',
     'email',
-    'password',
-    { birthday: 'Date' }
+    'password'
   ], req.body, 'User')
     .then(response => {
       res.json({ status: true, content: response });
