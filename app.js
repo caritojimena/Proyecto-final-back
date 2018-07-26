@@ -4,7 +4,8 @@ let createError = require('http-errors'),
   cookieParser = require('cookie-parser'),
   logger = require('morgan'),
   compression = require('compression'),
-  sessionVerifier = require('./modules/session-verifier');
+  sessionVerifier = require('./modules/session-verifier'),
+  device = require('express-device');
 
 require('./modules/authentication-verifier');
 
@@ -27,8 +28,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(device.capture({parseUserAgent: true}));
 
 app.use(allRouter);
+app.use(sessionVerifier.restoreSessionFix);
 app.use('/', indexRouter);
 
 //for user feature

@@ -18,6 +18,7 @@ util.getSessionByToken = (token) => {
                 if (user) {
                     //updates session expires
                     user.save();
+                    resolve(user);
                 } else
                     resolve(false);
             });
@@ -44,6 +45,7 @@ util.restoreSessionFix = (req, res, next) => {
 
     res.header('X-Powered-By', config.application.xPowerBy);
 
+    req.session = {};
     req.session.device = req.device.type;
     req.session.agent = req.device.parser.useragent;
     req.session.ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress; // Get IP - allow for proxy
@@ -54,9 +56,9 @@ util.restoreSessionFix = (req, res, next) => {
         req.session.token = req.header('Authorization').split(' ').pop();
         util.getSessionByToken(req.session.token)
             .then(user => {
-                if (user) {
+                if (user)
                     req.session.user = user;
-                }
+
                 next();
             });
     } else
