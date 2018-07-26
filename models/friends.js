@@ -3,14 +3,16 @@
 
 module.exports = (sequelize, DataTypes) => {
     let Friends = sequelize.define('Friends', {
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            allowNull: false,
-            primaryKey: true
-        },
         state: {
             type: DataTypes.STRING,
+            allowNull: false,
+        },
+        user1: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        user2: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         }
     }, {
