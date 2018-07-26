@@ -16,10 +16,11 @@ router.get('/:id', passport.authenticate('bearer', { session: false }), (req, re
 
 router.post('/save', (req, res, next) => {
   object.save([
-    'firstName',
-    'lastName',
     'email',
-    'password'
+    'password',
+    'firstName',
+    'lastName',  
+    'photo'
   ], req.body, 'User')
     .then(response => {
       res.json({ status: true, content: response });
@@ -32,11 +33,11 @@ router.post('/save', (req, res, next) => {
 router.put('/save/:id', (req, res, next) => {
   req.body.id = req.params.id;
   object.update([
-    'firstName',
-    'lastName',
     'email',
     'password',
-    { birthday: 'Date' }
+    'firstName',
+    'lastName',  
+    'photo'
   ], req.body, 'User')
     .then(response => {
       res.json({ status: true, content: response });
