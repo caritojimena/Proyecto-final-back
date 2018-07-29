@@ -5,7 +5,12 @@ var crypto = require('crypto');
 
 /* GET users listing. */
 router.get('/:id', passport.authenticate('bearer', { session: false }), (req, res, next) => {
-  object.get('User', req.params.id, 1, null)
+  let includes = {};
+  includes.id = [
+    { model: models.File, as: 'Photo' }
+  ];
+
+  object.get('User', req.params.id, 1, include)
     .then(response => {
       res.json({ status: true, content: response });
     })

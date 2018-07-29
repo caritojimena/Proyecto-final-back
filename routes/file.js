@@ -126,7 +126,7 @@ router.get(config.validate.thumbnailUrl, (req, res, next) => {
                                     res.locals.error.status = `el archivo ${req.url} no existe`;
                                     res.locals.error.stack = "";
                                     res.status(400);
-                                    res.render('error');
+                                    res.json('error');
                                 }
                             });
                         })
@@ -136,7 +136,7 @@ router.get(config.validate.thumbnailUrl, (req, res, next) => {
                             res.locals.error.status = `el archivo ${req.url} no existe`;
                             res.locals.error.stack = "";
                             res.status(400);
-                            res.render('error');
+                            res.json('error');
                         });
                 } else {
                     res.locals.message = `el archivo ${req.url} no existe`;
@@ -144,7 +144,7 @@ router.get(config.validate.thumbnailUrl, (req, res, next) => {
                     res.locals.error.status = `el archivo ${req.url} no existe`;
                     res.locals.error.stack = "";
                     res.status(400);
-                    res.render('error');
+                    res.json('error');
                 }
             });
     else {
@@ -153,7 +153,7 @@ router.get(config.validate.thumbnailUrl, (req, res, next) => {
         res.locals.error.status = `el archivo ${req.url} no existe`;
         res.locals.error.stack = "";
         res.status(400);
-        res.render('error');
+        res.json('error');
     }
 });
 

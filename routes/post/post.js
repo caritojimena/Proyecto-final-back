@@ -5,7 +5,30 @@ var object = require('../../modules/objectsAndTypes');
 
 /* GET users listing. */
 router.get('/:id', passport.authenticate('bearer', { session: false }), (req, res, next) => {
-  object.get('Post', req.params.id, 1, null)
+  let includes = {};
+  includes.id = [
+    {
+      model: models.User, as: 'User', include: [
+        { model: models.File, as: 'Photo' },
+      ]
+    },
+    { model: models.File, as: 'Photo' },
+    { model: models.Comment, as: 'Comments' },
+    { model: models.Like, as: 'Likes' },
+  ];
+
+  includes.all = [
+    {
+      model: models.User, as: 'User', include: [
+        { model: models.File, as: 'Photo' },
+      ]
+    },
+    { model: models.File, as: 'Photo' },
+    { model: models.Comment, as: 'Comments' },
+    { model: models.Like, as: 'Likes' },
+  ];
+
+  object.get('Post', req.params.id, 1, includes)
     .then(response => {
       res.json({ status: true, content: response });
     })
