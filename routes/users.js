@@ -15,12 +15,17 @@ router.get('/:id', passport.authenticate('bearer', { session: false }), (req, re
 });
 
 router.post('/save', (req, res, next) => {
+  req.body.token = crypto.createHmac('sha256', config.crypto.salt)
+    .update((Math.random() * 1000 + ""))
+    .digest('hex');
+
   object.save([
     'email',
     'password',
     'firstName',
     'lastName',
-    'photo'
+    'photo',
+    'token'
   ], req.body, 'User')
     .then(response => {
       res.json({ status: true, content: response });
@@ -89,7 +94,7 @@ router.post('/logout', passport.authenticate('bearer', { session: false }), (req
     req.session.user.token = null;
     req.session.user.save()
   }
-  
+
   res.json({ status: true, content: 'vuelva pronto' });
 });
 
