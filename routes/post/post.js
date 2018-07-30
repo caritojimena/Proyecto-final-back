@@ -28,7 +28,11 @@ router.get('/:id', passport.authenticate('bearer', { session: false }), (req, re
     { model: models.Like, as: 'Likes' },
   ];
 
-  object.get('Post', req.params.id, 1, includes)
+  let order = [
+    ['updated_at', 'DESC']
+  ];
+
+  object.get('Post', req.params.id, 1, includes, false, false, order)
     .then(response => {
       res.json({ status: true, content: response });
     })
